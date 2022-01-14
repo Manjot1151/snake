@@ -22,8 +22,8 @@ class Food {
     constructor() {
         while (true) {
             let isTouching = false;
-            this.x = snake.size * Math.floor(Math.random() * width / snake.size)
-            this.y = snake.size * Math.floor(Math.random() * height / snake.size)
+            this.x = snake.size * Math.floor(Math.random() * width / snake.size);
+            this.y = snake.size * Math.floor(Math.random() * height / snake.size);
             for (let i = 0; i < snake.tail.length; i++) {
                 if (this.x == snake.tail[i].x && this.y == snake.tail[i].y) {
                     isTouching = true;
@@ -106,17 +106,19 @@ function checkHitTail() {
 function checkHitWall() {
     let head = snake.tail[snake.tail.length - 1];
     if (snake.x >= width) {
-        head.x = 0;
+        snake.x = 0;
     }
     if (snake.y >= height) {
-        head.y = 0;
+        snake.y = 0;
     }
     if (snake.x < 0) {
-        head.x = width;
+        snake.x = width;
     }
     if (snake.y < 0) {
-        head.y = height
+        snake.y = height;
     }
+    head.x = snake.x;
+    head.y = snake.y;
 }
 
 function eatFood() {
@@ -133,10 +135,10 @@ function draw() {
     rect(0, 0, width, height, "black");
     rect(food.x, food.y, snake.size - 2, snake.size - 2, "red");
     for (let i = 0; i < snake.tail.length; i++) {
-        rect(snake.tail[i].x, snake.tail[i].y, snake.size - 2, snake.size - 2, "lightgreen")
+        rect(snake.tail[i].x, snake.tail[i].y, snake.size - 2, snake.size - 2, "lightgreen");
     }
     canvasContext.font = "20px Arial";
-    canvasContext.fillStyle = "cyan"
+    canvasContext.fillStyle = "cyan";
     canvasContext.fillText("Score: " + (snake.tail.length - 1), 0, 20);
 }
 
