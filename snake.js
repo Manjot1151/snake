@@ -131,7 +131,7 @@ function eatFood() {
 
 function draw() {
     rect(0, 0, width, height, "black");
-    rect(food.x, food.y, snake.size, snake.size, "red");
+    rect(food.x, food.y, snake.size - 2, snake.size - 2, "red");
     for (let i = 0; i < snake.tail.length; i++) {
         rect(snake.tail[i].x, snake.tail[i].y, snake.size - 2, snake.size - 2, "lightgreen")
     }
