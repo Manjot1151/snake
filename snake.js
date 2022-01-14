@@ -48,28 +48,35 @@ let snake = new Snake(0, 0, 20);
 let food = new Food();
 
 let alive = true;
+let hasTurned = false;
 
 window.onload = () => {
     setInterval(show, 1000 / FPS);
 }
 
 window.addEventListener("keydown", (e) => {
+    if (hasTurned)
+        return;
     const key = e.key;
     if (key == "ArrowLeft" && snake.rotateX == 0) {
         snake.rotateX = -1;
         snake.rotateY = 0;
+        hasTurned = true;
     }
     else if (key == "ArrowUp" && snake.rotateY == 0) {
         snake.rotateX = 0;
         snake.rotateY = -1;
+        hasTurned = true;
     }
     else if (key == "ArrowRight" && snake.rotateX == 0) {
         snake.rotateX = 1;
         snake.rotateY = 0;
+        hasTurned = true;
     }
     else if (key == "ArrowDown" && snake.rotateY == 0) {
         snake.rotateX = 0;
         snake.rotateY = 1;
+        hasTurned = true;
     }
 })
 
@@ -81,6 +88,7 @@ function show() {
 }
 
 function update() {
+    hasTurned = false;
     snake.move();
     checkHitTail();
     checkHitWall();
