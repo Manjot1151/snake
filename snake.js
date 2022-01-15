@@ -88,6 +88,11 @@ const height = canvas.height;
 
 const FPS = 15;
 
+const leftKey = ["a", "ArrowLeft"];
+const upKey = ["w", "ArrowUp"];
+const rightKey = ["d", "ArrowRight"];
+const downKey = ["s", "ArrowDown"];
+
 let snake = new Snake(0, 0, 20);
 let food = new Food();
 
@@ -97,16 +102,16 @@ window.onload = () => {
 
 window.addEventListener("keydown", (e) => {
     const key = e.key;
-    if (key == "ArrowLeft" && snake.rotate.x == 0) {
+    if (leftKey.includes(key) && snake.rotate.x == 0) {
         snake.turnLeft();
     }
-    else if (key == "ArrowUp" && snake.rotate.y == 0) {
+    else if (upKey.includes(key) && snake.rotate.y == 0) {
         snake.turnUp();
     }
-    else if (key == "ArrowRight" && snake.rotate.x == 0) {
+    else if (rightKey.includes(key) && snake.rotate.x == 0) {
         snake.turnRight();
     }
-    else if (key == "ArrowDown" && snake.rotate.y == 0) {
+    else if (downKey.includes(key) && snake.rotate.y == 0) {
         snake.turnDown();
     }
 })
