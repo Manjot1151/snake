@@ -1,11 +1,12 @@
 class Snake {
-    constructor(x, y, size) {
+    constructor(size) {
         this.alive = true;
-        this.x = x;
-        this.y = y;
+        this.x = size * Math.floor(Math.random() * width / size);
+        this.y = size * Math.floor(Math.random() * width / size);
         this.size = size;
         this.tail = [{ x: this.x, y: this.y }];
-        this.rotate = { x: 1, y: 0 };
+        let randomRotation = Math.floor(Math.random() * 3) - 1;
+        this.rotate = { x: randomRotation, y: 1 - Math.abs(randomRotation) };
         this.turnQueue = [];
         this.hasTurned = false;
     }
@@ -21,7 +22,6 @@ class Snake {
         if (this.turnQueue.length != 0) {
             let func = this.turnQueue.shift();
             func.bind(this)();
-
         }
     }
     turnLeft() {
@@ -92,8 +92,9 @@ const leftKey = ["a", "ArrowLeft"];
 const upKey = ["w", "ArrowUp"];
 const rightKey = ["d", "ArrowRight"];
 const downKey = ["s", "ArrowDown"];
+const restartKey = ["r"];
 
-let snake = new Snake(0, 0, 20);
+let snake = new Snake(20);
 let food = new Food();
 
 window.onload = () => {
@@ -113,6 +114,9 @@ window.addEventListener("keydown", (e) => {
     }
     else if (downKey.includes(key) && snake.rotate.y == 0) {
         snake.turnDown();
+    }
+    else if (restartKey.includes(key)) {
+        restart();
     }
 })
 
@@ -180,4 +184,9 @@ function draw() {
 function rect(x, y, width, height, color) {
     canvasContext.fillStyle = color;
     canvasContext.fillRect(x, y, width, height);
+}
+
+function restart() {
+    snake = new Snake(20);
+    food = new Food();
 }
