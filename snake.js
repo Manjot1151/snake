@@ -64,6 +64,11 @@ class Snake {
 
 class Food {
     constructor() {
+        if (snake.tail.length == width / snake.size * height / snake.size) {
+            this.x = -1000;
+            this.y = -1000;
+            return;
+        }
         while (true) {
             let isTouching = false;
             this.x = snake.size * Math.floor(Math.random() * width / snake.size);
