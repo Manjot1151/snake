@@ -178,9 +178,11 @@ function eatFood() {
 function draw() {
     rect(0, 0, width, height, "black");
     rect(food.x, food.y, snake.size - 2, snake.size - 2, "red");
-    for (let i = 0; i < snake.tail.length; i++) {
+    for (let i = 0; i < snake.tail.length - 1; i++) {
         rect(snake.tail[i].x, snake.tail[i].y, snake.size - 2, snake.size - 2, "lightgreen");
     }
+    let head = snake.tail[snake.tail.length - 1];
+    rect(head.x, head.y, snake.size - 2, snake.size - 2, "#60e35a")
     canvasContext.font = "20px Arial";
     canvasContext.fillStyle = "cyan";
     canvasContext.fillText("Score: " + (snake.tail.length - 1), 0, 20);
