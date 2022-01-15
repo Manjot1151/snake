@@ -1,20 +1,64 @@
 class Snake {
     constructor(x, y, size) {
+        this.alive = true;
         this.x = x;
         this.y = y;
         this.size = size;
         this.tail = [{ x: this.x, y: this.y }];
-        this.rotateX = 1;
-        this.rotateY = 0;
+        this.rotate = { x: 1, y: 0 };
+        this.turnQueue = [];
+        this.hasTurned = false;
     }
     move() {
-        this.x = this.tail[this.tail.length - 1].x + this.rotateX * this.size;
-        this.y = this.tail[this.tail.length - 1].y + this.rotateY * this.size;
+        this.hasTurned = false;
+        this.x = this.tail[this.tail.length - 1].x + this.rotate.x * this.size;
+        this.y = this.tail[this.tail.length - 1].y + this.rotate.y * this.size;
         this.tail.push({
             x: this.x,
             y: this.y
         });
         this.tail.shift();
+        if (this.turnQueue.length != 0) {
+            let func = this.turnQueue.shift();
+            func.bind(this)();
+
+        }
+    }
+    turnLeft() {
+        if (this.hasTurned) {
+            this.turnQueue.push(this.turnLeft);
+            return;
+        }
+        this.rotate.x = -1;
+        this.rotate.y = 0;
+        this.hasTurned = true;
+    }
+    turnUp() {
+        if (this.hasTurned) {
+            this.turnQueue.push(this.turnUp);
+            return;
+        }
+        this.rotate.x = 0;
+        this.rotate.y = -1;
+        this.hasTurned = true;
+    }
+    turnRight() {
+        if (this.hasTurned) {
+            this.turnQueue.push(this.turnRight);
+            return;
+        }
+        this.rotate.x = 1;
+        this.rotate.y = 0;
+        this.hasTurned = true;
+    }
+    turnDown() {
+        if (this.hasTurned) {
+            this.turnQueue.push(this.turnDown);
+            return;
+        }
+        this.rotate.x = 0;
+        this.rotate.y = 1;
+        this.hasTurned = true;
     }
 }
 
@@ -47,58 +91,44 @@ const FPS = 15;
 let snake = new Snake(0, 0, 20);
 let food = new Food();
 
-let alive = true;
-let hasTurned = false;
-
 window.onload = () => {
     setInterval(show, 1000 / FPS);
 }
 
 window.addEventListener("keydown", (e) => {
-    if (hasTurned)
-        return;
     const key = e.key;
-    if (key == "ArrowLeft" && snake.rotateX == 0) {
-        snake.rotateX = -1;
-        snake.rotateY = 0;
-        hasTurned = true;
+    if (key == "ArrowLeft" && snake.rotate.x == 0) {
+        snake.turnLeft();
     }
-    else if (key == "ArrowUp" && snake.rotateY == 0) {
-        snake.rotateX = 0;
-        snake.rotateY = -1;
-        hasTurned = true;
+    else if (key == "ArrowUp" && snake.rotate.y == 0) {
+        snake.turnUp();
     }
-    else if (key == "ArrowRight" && snake.rotateX == 0) {
-        snake.rotateX = 1;
-        snake.rotateY = 0;
-        hasTurned = true;
+    else if (key == "ArrowRight" && snake.rotate.x == 0) {
+        snake.turnRight();
     }
-    else if (key == "ArrowDown" && snake.rotateY == 0) {
-        snake.rotateX = 0;
-        snake.rotateY = 1;
-        hasTurned = true;
+    else if (key == "ArrowDown" && snake.rotate.y == 0) {
+        snake.turnDown();
     }
 })
 
 function show() {
-    if (!alive)
+    if (!snake.alive)
         return;
     update();
     draw();
 }
 
 function update() {
-    hasTurned = false;
     snake.move();
-    checkHitTail();
     checkHitWall();
+    checkHitTail();
     eatFood();
 }
 
 function checkHitTail() {
     for (let i = 0; i < snake.tail.length - 1; i++) {
         if (snake.x == snake.tail[i].x && snake.y == snake.tail[i].y && snake.x != food.x && snake.y != food.y) {
-            alive = false;
+            snake.alive = false;
         }
     }
 }
@@ -112,10 +142,10 @@ function checkHitWall() {
         snake.y = 0;
     }
     if (snake.x < 0) {
-        snake.x = width;
+        snake.x = width - snake.size;
     }
     if (snake.y < 0) {
-        snake.y = height;
+        snake.y = height - snake.size;
     }
     head.x = snake.x;
     head.y = snake.y;
