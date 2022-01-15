@@ -5,10 +5,12 @@ class Snake {
         this.y = size * Math.floor(Math.random() * width / size);
         this.size = size;
         this.tail = [{ x: this.x, y: this.y }];
-        let randomRotation = Math.floor(Math.random() * 3) - 1;
-        this.rotate = { x: randomRotation, y: 1 - Math.abs(randomRotation) };
+        this.rotate = { x: 0, y: 0 };
         this.turnQueue = [];
         this.hasTurned = false;
+
+        let randomTurn = [this.turnLeft, this.turnUp, this.turnRight, this.turnDown];
+        randomTurn[Math.floor(Math.random() * randomTurn.length)].bind(this)();
     }
     move() {
         this.hasTurned = false;
@@ -20,8 +22,7 @@ class Snake {
         });
         this.tail.shift();
         if (this.turnQueue.length != 0) {
-            let func = this.turnQueue.shift();
-            func.bind(this)();
+            this.turnQueue.shift().bind(this)();
         }
     }
     turnLeft() {
@@ -29,8 +30,7 @@ class Snake {
             this.turnQueue.push(this.turnLeft);
             return;
         }
-        this.rotate.x = -1;
-        this.rotate.y = 0;
+        this.rotate = { x: -1, y: 0 };
         this.hasTurned = true;
     }
     turnUp() {
@@ -38,8 +38,7 @@ class Snake {
             this.turnQueue.push(this.turnUp);
             return;
         }
-        this.rotate.x = 0;
-        this.rotate.y = -1;
+        this.rotate = { x: 0, y: -1 };
         this.hasTurned = true;
     }
     turnRight() {
@@ -47,8 +46,7 @@ class Snake {
             this.turnQueue.push(this.turnRight);
             return;
         }
-        this.rotate.x = 1;
-        this.rotate.y = 0;
+        this.rotate = { x: 1, y: 0 };
         this.hasTurned = true;
     }
     turnDown() {
@@ -56,8 +54,7 @@ class Snake {
             this.turnQueue.push(this.turnDown);
             return;
         }
-        this.rotate.x = 0;
-        this.rotate.y = 1;
+        this.rotate = { x: 0, y: 1 };
         this.hasTurned = true;
     }
 }
