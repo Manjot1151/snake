@@ -1,5 +1,5 @@
 # Snake
-[Snake Game](manjot1151.github.io/snake/) made in JavaScript
+[Snake Game](https://manjot1151.github.io/snake/) made in JavaScript
 
 # Controls
 - Left: A / Left Arrow
